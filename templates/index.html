@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to MCQ Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        header {
+            background: #4e73df;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .upload-section {
+            padding: 40px;
+            text-align: center;
+        }
+        .file-upload-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .file-upload-input {
+            position: absolute;
+            left: -9999px;
+        }
+        .file-upload-label {
+            display: block;
+            padding: 20px 40px;
+            background: #f8f9fa;
+            border: 3px dashed #4e73df;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            color: #4e73df;
+            font-weight: 600;
+        }
+        .file-upload-label:hover {
+            background: #e6ecff;
+            border-color: #2a54d8;
+        }
+        .file-upload-label svg {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 15px;
+            fill: #4e73df;
+        }
+        .generate-btn {
+            background: #4e73df;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            box-shadow: 0 4px 15px rgba(78, 115, 223, 0.3);
+        }
+        .generate-btn:hover {
+            background: #2a54d8;
+        }
+        .error {
+            color: #e74c3c;
+            font-weight: 500;
+            margin: 20px 0;
+        }
+        .questions-section {
+            padding: 40px;
+            background: #f8fbff;
+        }
+        .questions-section h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4e73df;
+            font-size: 1.8rem;
+        }
+        .mcq {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+        .mcq:hover {
+            transform: translateY(-5px);
+        }
+        .mcq strong {
+            display: block;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .mcq ul {
+            list-style: none;
+            padding-left: 10px;
+        }
+        .mcq li {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            border-left: 4px solid #4e73df;
+            transition: background 0.3s ease;
+        }
+        .mcq li:hover {
+            background: #e6ecff;
+        }
+        .mcq em {
+            display: block;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #27ae60;
+            font-weight: 600;
+        }
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            .upload-section, .questions-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📘 PDF to MCQ Generator</h1>
+            <p>Upload your PDF file and instantly generate multiple-choice questions</p>
+        </header>
+
+        <div class="upload-section">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="file-upload-wrapper">
+                    <input type="file" name="pdf" id="pdf-upload" class="file-upload-input" accept=".pdf" required>
+                    <label for="pdf-upload" class="file-upload-label">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM16 14h-3v3h-2v-3H8v-2h3V9h2v3h3v2zM13 5l3 3h-3V5z"/>
+                        </svg>
+                        <span>Click to upload PDF or drag & drop</span>
+                    </label>
+                </div>
+                <br>
+                <button type="submit" class="generate-btn">Generate MCQs</button>
+            </form>
+
+            {% if error %}
+            <p class="error">{{ error }}</p>
+            {% endif %}
+        </div>
+
+        {% if questions %}
+        <div class="questions-section">
+            <h2>Generated Questions</h2>
+            {% for q in questions %}
+            <div class="mcq">
+                <strong>Q{{ loop.index }}. {{ q.question }}</strong>
+                <ul>
+                    {% for opt in q.options %}
+                    <li>{{ opt }}</li>
+                    {% endfor %}
+                </ul>
+                <em>Correct Answer: {{ q.answer }}</em>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
