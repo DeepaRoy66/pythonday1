@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# Environment variables
+.env
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Uploads folder (important for your project!)
+uploads/
+uploads/*
+
+# Flask / Web app
+instance/
+*.log
+staticfiles/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Requirements (optional – some people track it, but if large)
+# requirements.txt  # Uncomment if you don't want to track it
