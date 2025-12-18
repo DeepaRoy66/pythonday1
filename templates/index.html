@@ -1,237 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF to MCQ Generator</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to MCQ Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-font-family:Poppins,sans-serif;
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px
-}
-.container{
-max-width:950px;
-width:100%;
-background:#fff;
-border-radius:18px;
-overflow:hidden;
-box-shadow:0 30px 80px rgba(0,0,0,.35)
-}
-header{
-background:linear-gradient(135deg,#667eea,#764ba2);
-color:#fff;
-padding:35px;
-text-align:center
-}
-header h1{font-size:2.2rem}
-header p{opacity:.9;margin-top:5px}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
 
-.upload-section{
-padding:40px;
-text-align:center
-}
-.file-label{
-border:3px dashed #667eea;
-border-radius:16px;
-padding:35px;
-cursor:pointer;
-transition:.3s;
-display:block
-}
-.file-label:hover{
-background:#f2f4ff;
-transform:scale(1.02)
-}
-.file-label svg{
-width:60px;
-height:60px;
-fill:#667eea;
-margin-bottom:15px
-}
-input[type=file]{display:none}
-button{
-margin-top:25px;
-background:#667eea;
-color:#fff;
-border:none;
-padding:14px 40px;
-border-radius:10px;
-font-size:1.05rem;
-font-weight:600;
-cursor:pointer;
-transition:.3s
-}
-button:hover{
-background:#4c63d2;
-transform:translateY(-2px)
-}
-.message{
-margin-top:20px;
-font-weight:600
-}
-.success{color:#1cc88a}
-.error{color:#e74c3c}
+        body {
+            font-family: Poppins, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px
+        }
 
-.quiz-section{
-padding:40px;
-background:#f8fbff
-}
-.quiz-section h2{
-text-align:center;
-margin-bottom:30px;
-color:#667eea
-}
-.mcq{
-background:#fff;
-padding:25px;
-border-radius:14px;
-margin-bottom:25px;
-box-shadow:0 10px 25px rgba(0,0,0,.08)
-}
-.mcq strong{
-display:block;
-margin-bottom:15px;
-font-size:1.15rem
-}
-.option{
-padding:12px 15px;
-border-radius:8px;
-background:#eef2ff;
-margin-bottom:10px;
-cursor:pointer;
-transition:.3s
-}
-.option:hover{background:#dde4ff}
-.option.selected{
-background:#667eea;
-color:#fff
-}
-.option.correct{background:#1cc88a;color:#fff}
-.option.wrong{background:#e74c3c;color:#fff}
+        .container {
+            max-width: 950px;
+            width: 100%;
+            background: #fff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, .35)
+        }
 
-.score{
-text-align:center;
-font-size:1.4rem;
-font-weight:700;
-margin-top:30px
-}
+        header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 35px;
+            text-align: center
+        }
 
-footer{
-text-align:center;
-padding:15px;
-background:#f1f3f9;
-font-size:.9rem;
-color:#555
-}
+        header h1 {
+            font-size: 2.2rem
+        }
 
-@media(max-width:768px){
-header h1{font-size:1.7rem}
-button{width:100%}
-}
-</style>
+        header p {
+            opacity: .9;
+            margin-top: 5px
+        }
+
+        .upload-section {
+            padding: 40px;
+            text-align: center
+        }
+
+        .file-label {
+            border: 3px dashed #667eea;
+            border-radius: 16px;
+            padding: 35px;
+            cursor: pointer;
+            transition: .3s;
+            display: block
+        }
+
+        .file-label:hover {
+            background: #f2f4ff;
+            transform: scale(1.02)
+        }
+
+        .file-label svg {
+            width: 60px;
+            height: 60px;
+            fill: #667eea;
+            margin-bottom: 15px
+        }
+
+        input[type=file] {
+            display: none
+        }
+
+        button {
+            margin-top: 25px;
+            background: #667eea;
+            color: #fff;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .3s
+        }
+
+        button:hover {
+            background: #4c63d2;
+            transform: translateY(-2px)
+        }
+
+        .message {
+            margin-top: 20px;
+            font-weight: 600
+        }
+
+        .success {
+            color: #1cc88a
+        }
+
+        .error {
+            color: #e74c3c
+        }
+
+        .quiz-section {
+            padding: 40px;
+            background: #f8fbff
+        }
+
+        .quiz-section h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #667eea
+        }
+
+        .mcq {
+            background: #fff;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .08)
+        }
+
+        .mcq strong {
+            display: block;
+            margin-bottom: 15px;
+            font-size: 1.15rem
+        }
+
+        .option {
+            padding: 12px 15px;
+            border-radius: 8px;
+            background: #eef2ff;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: .3s
+        }
+
+        .option:hover {
+            background: #dde4ff
+        }
+
+        .option.selected {
+            background: #667eea;
+            color: #fff
+        }
+
+        .option.correct {
+            background: #1cc88a;
+            color: #fff
+        }
+
+        .option.wrong {
+            background: #e74c3c;
+            color: #fff
+        }
+
+        .score {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-top: 30px
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #f1f3f9;
+            font-size: .9rem;
+            color: #555
+        }
+
+        @media(max-width:768px) {
+            header h1 {
+                font-size: 1.7rem
+            }
+
+            button {
+                width: 100%
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container">
-<header>
-<h1>📘 PDF to MCQ Generator</h1>
-<p>Upload • Attempt • Score Instantly</p>
-</header>
+    <div class="container">
+        <header>
+            <h1>📘 PDF to MCQ Generator</h1>
+            <p>Upload • Attempt • Score Instantly</p>
+        </header>
 
-<div class="upload-section">
-<form method="POST" enctype="multipart/form-data">
-<label for="pdf" class="file-label">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM13 5l5 5h-5z"/>
-</svg>
-<span>Select PDF File</span>
-</label>
-<input type="file" name="pdf" id="pdf" accept=".pdf" required>
-<button type="submit">Upload & Generate</button>
-</form>
+        <div class="upload-section">
+            <form method="POST" enctype="multipart/form-data">
+                <label for="pdf" class="file-label">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM13 5l5 5h-5z" />
+                    </svg>
+                    <span>Select PDF File</span>
+                </label>
+                <input type="file" name="pdf" id="pdf" accept=".pdf" required>
+                <button type="submit">Upload & Generate</button>
+            </form>
 
-{% if success %}
-<p class="message success">{{ success }}</p>
-{% endif %}
-{% if error %}
-<p class="message error">{{ error }}</p>
-{% endif %}
-</div>
+            {% if success %}
+            <p class="message success">{{ success }}</p>
+            {% endif %}
+            {% if error %}
+            <p class="message error">{{ error }}</p>
+            {% endif %}
+        </div>
 
-{% if questions %}
-<div class="quiz-section" id="quiz">
-<h2>Answer All Questions</h2>
+        {% if questions %}
+        <div class="quiz-section" id="quiz">
+            <h2>Answer All Questions</h2>
 
-{% for q in questions %}
-<div class="mcq" data-answer="{{ q.answer }}">
-<strong>Q{{ loop.index }}. {{ q.question }}</strong>
-{% for opt in q.options %}
-<div class="option">{{ opt }}</div>
-{% endfor %}
-</div>
-{% endfor %}
+            {% for q in questions %}
+            <div class="mcq" data-answer="{{ q.answer }}">
+                <strong>Q{{ loop.index }}. {{ q.question }}</strong>
+                {% for opt in q.options %}
+                <div class="option">{{ opt }}</div>
+                {% endfor %}
+            </div>
+            {% endfor %}
 
-<button id="submitBtn">Submit Quiz</button>
-<div class="score" id="score"></div>
-</div>
-{% endif %}
+            <button id="submitBtn">Submit Quiz</button>
+            <div class="score" id="score"></div>
+        </div>
+        {% endif %}
 
-<footer>Developed by Team I</footer>
-</div>
+        <footer>Developed by Team I</footer>
+    </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
 
-document.querySelectorAll(".mcq").forEach(mcq => {
-mcq.querySelectorAll(".option").forEach(option => {
-option.addEventListener("click", () => {
-mcq.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
-option.classList.add("selected");
-});
-});
-});
+            document.querySelectorAll(".mcq").forEach(mcq => {
+                mcq.querySelectorAll(".option").forEach(option => {
+                    option.addEventListener("click", () => {
+                        mcq.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
+                        option.classList.add("selected");
+                    });
+                });
+            });
 
-const submitBtn = document.getElementById("submitBtn");
-if (submitBtn) {
-submitBtn.addEventListener("click", () => {
-let score = 0;
-const questions = document.querySelectorAll(".mcq");
+            const submitBtn = document.getElementById("submitBtn");
+            if (submitBtn) {
+                submitBtn.addEventListener("click", () => {
+                    let score = 0;
+                    const questions = document.querySelectorAll(".mcq");
 
-questions.forEach(mcq => {
-const correct = mcq.dataset.answer;
-mcq.querySelectorAll(".option").forEach(opt => {
-opt.style.pointerEvents = "none";
+                    questions.forEach(mcq => {
+                        const correct = mcq.dataset.answer;
+                        mcq.querySelectorAll(".option").forEach(opt => {
+                            opt.style.pointerEvents = "none";
 
-if (opt.textContent === correct) {
-opt.classList.add("correct");
-}
+                            if (opt.textContent === correct) {
+                                opt.classList.add("correct");
+                            }
 
-if (opt.classList.contains("selected") && opt.textContent === correct) {
-score++;
-}
+                            if (opt.classList.contains("selected") && opt.textContent === correct) {
+                                score++;
+                            }
 
-if (opt.classList.contains("selected") && opt.textContent !== correct) {
-opt.classList.add("wrong");
-}
-});
-});
+                            if (opt.classList.contains("selected") && opt.textContent !== correct) {
+                                opt.classList.add("wrong");
+                            }
+                        });
+                    });
 
-document.getElementById("score").innerText =
-`Your Score: ${score} / ${questions.length}`;
-});
-}
+                    document.getElementById("score").innerText =
+                        `Your Score: ${score} / ${questions.length}`;
+                });
+            }
 
-});
-</script>
+        });
+    </script>
 
 </body>
+
 </html>
